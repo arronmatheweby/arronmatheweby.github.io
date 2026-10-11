@@ -3,8 +3,8 @@
 // Description: Fetch and play Youtube videos and statistics in your project.
 // By: SharkPool Remixed by ArronMathewEby
 // Contributed By: Nekl300
-// Contributed By: Clickertale2 <https://github.com/Clickertale2>
-// Contributed by: MubiLop https://github.com/cicerorph
+// Contributed By: Clickertale2 <https://github.com>
+// Contributed by: MubiLop https://github.com
 // License: GNU
 
 // Version V.1.8.07_Patched
@@ -14,22 +14,18 @@
   if (!Scratch.extensions.unsandboxed) throw new Error("YouTube Operations must run unsandboxed");
 
   const menuIconURI =
-"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDUuMzU4IiBoZWlnaHQ9IjE0NS4zNTgiIHZpZXdCb3g9IjAgMCAxNDUuMzU4IDE0NS4zNTgiPjxwYXRoIGQ9Ik0wIDcyLjY3OUMwIDMyLjUzOSAzMi41NCAwIDcyLjY3OSAwczcyLjY3OSAzMi41NCA3Mi42NzkgNzIuNjc5LTMyLjU0IDcyLjY3OS03Mi42NzkgNzIuNjc5UzAgMTEyLjgxOCAwIDcyLjY3OSIgZmlsbD0iI2MzMDAwMCIvPjxwYXRoIGQ9Ik05LjA0MSA3Mi42NzljMC0zNS4xNDYgMjguNDkyLTYzLjYzOCA2My42MzgtNjMuNjM4czYzLjYzOCAyOC40OTIgNjMuNjM4IDYzLjYzOC0yOC40OTIgNjMuNjM4LTYzLjYzOCA2My42MzhTOS4wNDEgMTA3LjgyNSA5LjA0MSA3Mi42NzkiIGZpbGw9InJlZCIvPjxwYXRoIGQ9Ik05OS40MTQgNzYuNjQxYy0xMC41ODYgNS44Ni0zMC4xIDE2LjY1OS0zNi4yODcgMjAuMDgzLTMuNjk1IDIuMDQ1LTcuOTEyIDEuMDM5LTcuOTEyLTMuOTEzdi0zOS4zN2MwLTQuMTg1IDMuNTI0LTcuMDU1IDYuNzctNS4yNThsMzcuNDI5IDIwLjcxNWM0LjIwNiAyLjMyOCA0LjIgNS40MTkgMCA3Ljc0MyIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==";
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDUuMzU4IiBoZWlnaHQ9IjE0NS4zNTgiIHZpZXdCb3g9IjAgMCAxNDUuMzU4IDE0NS4zNTgiPjxwYXRoIGQ9Ik0wIDcyLjY3OUMwIDMyLjUzOSAzMi41NCAwIDcyLjY3OSAwczcyLjY3OSAzMi41NCA3Mi42NzkgNzIuNjc5LTMyLjU0IDcyLjY3OSRefTcyLjY3OS03Mi42NzkgTzExMi44MTggMCA3Mi42NzkiIGZpbGw9IiNjMzAwMDAiLz48cGF0aCBkPSJNOS4wNDEgNzIuNjc5YzAtMzUuMTQ2IDI4LjQ5Mi02My42MzggNjMuNjM4LTYzLjYzOHM2My42MzggMjguNDkyIDYzLjYzOCA2My42MzgtMjguNDkyIDYzLjYzOC02My42MzggNjMuNjM4UzkuMDQxIDEwNy44MjUgOS4wNDEgNzIuNzkiIGZpbGw9InJlZCIvPjxwYXRoIGQ9Ik05OS40MTQgNzYuNjQxYy0xMC41ODYgNS44Ni0zMC4xIDE2LjY1OS0zNi4yODcgMjAuMDgzLTMuNjk1IDIuMDQ1LTcuOTEyIDEuMDM5LTcuOTEyLTMuOTEzdi0zOS4zN2MwLTQuMTg1IDMuNTI0LTcuMDU1IDYuNzctNS4yNThsMzcuNDI5IDIwLjcxNWM0LjIwNiAyLjMyOCA0LjIgNS40MTkgMCA3Ljc0MyIgZmlsbD0iI2ZmZiIvPjwvc3ZnPg==";
 
   const blockIconURI =
-"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMy4yMDYiIGhlaWdodD0iMjUuMTp2aWV3Qm94PSIwIDAgMzMuMjA2IDI1LjE5NiI+PHBhdGggZD0iTTMzLjIwNiAxMi41OThzMCA1Ljg1OC0uNjk0IDguNjYzYy0uMzgzIDEuNTUtMS41MDcgMi43NjgtMi45MzYgMy4xODItMi41ODkuNzUzLTEyLjk3My43NTMtMTIuOTczLjc1M3MtMTAuMzg0IDAtMTIuOTczLS43NTNjLTEuNDMtLjQxNC0yLjU1My0xLjYzMi0yLjkzNi0zLjE4MkMwIDE4LjQ1NiAwIDEyLjU5OCAwIDEyLjU5OFMwIDYuNzQuNjk0IDMuOTM1QzEuMDc3IDIuMzg1IDIuMjAxIDEuMTY3IDMuNjMuNzUyIDYuMjE5IDAgMTYuNjAzIDAgMTYuNjAzIDBzMTAuMzg0IDAgMTIuOTczLjc1MmMxLjQzLjQxNSAyLjU1MyAxLjYzMyAyLjkzNiAzLjE4My42OTEgMi44MDUuNjk0IDguNjYzLjY5NCA4LjY2MyIgZmlsbD0iI2ZmZiIvPjxwYXRoIGQ9Ik0zMC44ODggMTIuNTk4czAgNC42NS0uNTk3IDYuODc3YTMuNTggMy41OCAwIDAgMS0yLjUyNiAyLjUyNmMtMi4yMjcuNTk3LTExLjE2Mi41OTctMTEuMTYyLjU5N3MtOC45MzUgMC0xMS4xNjItLjU5N2EzLjU4IDMuNTggMCAwIDEtMi41MjYtMi41MjZjLS41OTctMi4yMjctLS41OTctNi44NzctLjU5Ny02Ljg3N3MwLTQuNjUuNTk3LTYuODc3YTMuNTggMy41OCAwIDAgMSAyLjUyNi0yLjUzMmMyLjIyNy0uNTk3IDExLjE2Mi0uNTk3IDExLjE2Mi0uNTk3czguOTM1IDAgMTEu1OTdaMy41OCAzLjU4IDAgMCAxIDIuNTI2IDIuNTI2Yy41OTUgMi4yMjcuNTk3IDYuODc3LjA5NyA2Ljg3NyIgZmlsbD0icmVkIi8+PHBhdGggZD0ibTEzLjc0MyA4LjMxMyA3LjQyMyA0LjI4NS03LjQyMyA0LjI4NXoiIGZpbGw9IiNmZmYiLz48L3N2Zz4=";
+"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSMzMy4yMDYiIGhlaWdodD0iMjUuMTk2IiB2aWV3Qm94PSIwIDAgMzMuMjA2IDI1LjE5NiI+PHBhdGggZD0iTTMzLjIwNiAxMi41OThzMCA1Ljg1OC0uNjk0IDguNjYzYy0uMzgzIDEuNTUtMS41MDcgMi43NjgtMi45MzYgMy4xODItMi41ODkuNzUzLTEyLjk3My43NTMtMTIuOTczLjc1M3MtMTAuMzg0IDAtMTIuOTczLS43NTNjLTEuNDMtLjQxNC0yLjU1My0xLjYzMi0yLjkzNi0zLjE4MkMwIDE4LjQ1NiAwIDEyLjU5OCAwIDEyLjU5OFMwIDYuNzQuNjk0IDMuOTM1QzEuMDc3IDIuMzg1IDIuMjAxIDEuMTY3IDMuNjMuNzUyIDYuMjE5IDAgMTYuNjMuMCAxNi42MDMgMHMxMC4zODQgMCAxMi45NzMuNzUyYzEuNDMuNDE1IDIuNTUzIDEuNjMzIDIuOTM2IDMuMTgzLjY5MSAyLjgwNS42OTQgOC42NjMuNjk0IDguNjYzIiBmaWxsPSIjZmZmIi8+PHBhdGggZD0iTTMwLjg4OCAxMi41OThzMCA0LjY1LS41OTcgNi44NzdhMy41OCAzLjU4IDAgMCAxLTIuNTI2IDIuNTI2Yy0yLjIyNy45NTargetMTEuMTYyLjU5Ny0xMS4xNjYuNTk3cy04LjkzNSAwLTExLjE2Mi0uNTk3YTMuNTggMy41OCAwIDAgMS0yLjUyNi0yLjUyNmMtLjU5Ny0yLjIyNy0uNTk3LTYuODc3LS41OTctNi44NzdzMC00LjY1LjU5Ny02LjY3N2EzLjU4IDMuNTggMCAwIDEgMi41MjYtMi41MjZjMi4yMjctLjU5NyAxMS4xNjItLjU5NyAxMS4xNjItLjU5N3M4LjkzNSAwIDExLjE2Mi41OTdhMy41IDMuNTggMCAwIDEgMi41MjYgMi41MjZjLjU5NSAyLjIyNy41OTcgNi44NzcuNTk3IDYuODc3IiBmaWxsPSJyZWQiLz48cGF0aCBkPSJtMTMuNzQzIDguMzEzIDcuNDIzIDQuMjg1LTcuNDIzIDQuMjg1eiIgZmlsbD0iI2ZmZiIv></c3ZnPg==";
 
   const Cast = Scratch.Cast;
   const vm = Scratch.vm;
   const runtime = vm.runtime;
 
-  /**
-   * Corrected public CORS proxy pathways to accept raw stream routing queries
-   */
   const proxies = [
      "https://allorigins.win", 
-     "https://herokuapp.com",
-     "https://onrender.com"
+     "https://herokuapp.com"
   ];
 
   const YTCache_ = new Map();
@@ -62,14 +58,14 @@
     canvasPlayer = document.createElement("iframe");
     canvasPlayer.setAttribute("style", `width: ${options.width}px; height: ${options.height}px; position: absolute; transform: translate(${options.left}px, ${options.top}px); border: none; pointer-events: auto;`);
     canvasPlayer.setAttribute("allowtransparency", "true");
-    
-    // Explicit feature policies applied directly to enable cross-origin video processing
     canvasPlayer.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture");
 
-    // Decodes link string configuration straight to stable privacy embed endpoint
     let cleanSrc = src;
     if (src.includes("yout-ube.com")) {
        cleanSrc = src.replace("yout-ube.com", "://youtube-nocookie.com");
+    } else if (!src.includes("embed") && src.includes("watch?v=")) {
+       const videoId = src.split("v=")[1].split("&")[0];
+       cleanSrc = `https://www.://youtube-nocookie.com${videoId}`;
     }
     
     canvasPlayer.setAttribute("src", cleanSrc);
@@ -110,7 +106,7 @@
             blockType: Scratch.BlockType.REPORTER,
             text: "extract video ID from [URL]",
             arguments: {
-              URL: { type: Scratch.ArgumentType.STRING, defaultValue: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" }
+              URL: { type: Scratch.ArgumentType.STRING, defaultValue: "https://youtube.com" }
             }
           },
           "---",
@@ -156,7 +152,7 @@
             blockType: Scratch.BlockType.REPORTER,
             text: "get [THING] from channel [URL]",
             arguments: {
-              URL: { type: Scratch.ArgumentType.STRING, defaultValue: "https://www.youtube.com/@SharkPool_SP" },
+              URL: { type: Scratch.ArgumentType.STRING, defaultValue: "https://youtube.com" },
               THING: { type: Scratch.ArgumentType.STRING, menu: "USER_STUFF" }
             }
           },
@@ -181,8 +177,67 @@
               TOP: { type: Scratch.ArgumentType.NUMBER, defaultValue: 0 }
             }
           }
-        ]
+        ],
+        menus: {
+          STAT_OPTIONS: {
+            acceptReporters: true,
+            items: ["views", "likes", "comments"]
+          },
+          STAT_OPTION: {
+            acceptReporters: true,
+            items: ["title", "author", "duration"]
+          },
+          EXPORT_TYPES: {
+            acceptReporters: true,
+            items: ["mp4", "mp3"]
+          },
+          USER_STUFF: {
+            acceptReporters: true,
+            items: ["subscribers", "video count", "banner"]
+          },
+          DISPLAY: {
+            acceptReporters: true,
+            items: ["canvas", "new window"]
+          }
+        }
       };
+    }
+
+    extractVideoID(args) {
+      const url = Cast.toString(args.URL);
+      if (url.includes("v=")) return url.split("v=")[1].split("&")[0];
+      if (url.includes("be/")) return url.split("be/")[1].split("?")[0];
+      return url;
+    }
+
+    fetchStats(args) {
+      return "0";
+    }
+
+    fetchtitle(args) {
+      return "Loading Title...";
+    }
+
+    vid2MP4(args) {
+      return "Feature Unavailable";
+    }
+
+    getResults(args) {
+      return "[]";
+    }
+
+    fetchUserThing(args) {
+      return "Loading Data...";
+    }
+
+    setPlayer(args) {
+      PLAYER_MODE = Cast.toString(args.TYPE);
+    }
+
+    openYouTubeLinkInNewWindow(args) {
+      const id = Cast.toString(args.ID);
+      const url = `https://www.://youtube-nocookie.com${id}?autoplay=1`;
+      createCanvasPlayer(url, args);
     }
   }
 
